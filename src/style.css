@@ -1,0 +1,61 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+img {
+  max-width: 100%;
+}
+
+.cat {
+  max-width: 64px;
+  image-rendering: pixelated;
+}
+
+.play-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 99;
+}
+
+.piano {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  height: 100vh;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.piano__key {
+  padding: 0.312rem;
+  height: 64px;
+  border: 1px solid black;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.piano__key:nth-child(2n + 2) {
+  background: black;
+  color: white;
+  bottom: 10px;
+}
+
+.piano__key::selection {
+  background: transparent;
+}
+
+.piano__key--active,
+.piano__key:active {
+  cursor: none;
+  background: skyblue !important;
+}
