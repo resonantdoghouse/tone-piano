@@ -25,12 +25,14 @@ img {
 }
 
 .piano {
+  overflow: scroll;
   display: flex;
   align-items: flex-start;
   justify-content: center;
 }
 
 .piano__key {
+  flex-shrink: 0;
   width: 32px;
   height: 128px;
   border: 1px solid black;

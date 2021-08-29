@@ -2,7 +2,10 @@ import * as Tone from 'tone';
 import './style.css';
 
 import Piano from './Piano';
-import songData from './songData';
+
+import avril14 from './avril14';
+import canonInD from './songs/canonInD.json';
+
 import pianoKeys from './pianoKeys';
 
 const root = document.getElementById('root');
@@ -10,9 +13,11 @@ const root = document.getElementById('root');
 /*
  * Config vars
  */
+const songs = [avril14, canonInD];
+const songData = songs[1];
+
 let playing = false;
-let bpm = (Tone.Transport.bpm.value = songData.header.bpm);
-let piano;
+let bpm = (Tone.Transport.bpm.value = songData.header.bpm || '120');
 
 /*
  * Effects
