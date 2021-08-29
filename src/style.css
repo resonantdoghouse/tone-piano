@@ -56,8 +56,17 @@ img {
   background: transparent;
 }
 
-.piano__key--active,
 .piano__key:active {
   cursor: none;
+  background: violet;
+}
+
+.piano__key--lh-active {
+  cursor: none;
   background: lightgreen;
+}
+
+.piano__key--rh-active {
+  cursor: none;
+  background: skyblue;
 }

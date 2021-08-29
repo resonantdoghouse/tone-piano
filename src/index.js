@@ -1,6 +1,5 @@
 import * as Tone from 'tone';
 import './style.css';
-import keyboardCat from './keyboard-cat.jpeg';
 
 import Piano from './Piano';
 import songData from './songData';
@@ -86,7 +85,7 @@ function musicParts(pianoKeyElements) {
       note.velocity
     );
 
-    keyPlaying(note, pianoKeyElements);
+    keyPlaying(note, pianoKeyElements, 'rh');
   }, songData.tracks[0].notes).start();
 
   // bass music part
@@ -98,21 +97,24 @@ function musicParts(pianoKeyElements) {
       note.velocity
     );
 
-    keyPlaying(note, pianoKeyElements);
+    keyPlaying(note, pianoKeyElements, 'lh');
   }, songData.tracks[1].notes).start();
   musicPartsCreated = true;
 }
 
-function keyPlaying(note, pianoKeyElements) {
-  const keyElement = pianoKeyElements.find((element) => {
-    const noteData = element.getAttribute('data-note');
-    return noteData === note.name;
-  });
-
+function keyPlaying(note, pianoKeyElements, hand) {
+  const keyElement = pianoKeyElements.find(
+    (element) => element.getAttribute('data-note') === note.name
+  );
   if (keyElement) {
-    keyElement.classList.add('piano__key--active');
+    if (hand === 'rh') {
+      keyElement.classList.add('piano__key--rh-active');
+    } else if (hand === 'lh') {
+      keyElement.classList.add('piano__key--lh-active');
+    }
     setTimeout(() => {
-      keyElement.classList.remove('piano__key--active');
+      keyElement.classList.remove('piano__key--lh-active');
+      keyElement.classList.remove('piano__key--rh-active');
     }, note.duration * 1000);
   }
 }
@@ -149,7 +151,6 @@ function init() {
   playBtn.classList.add('play-btn');
   playBtn.innerText = 'play';
   playBtn.addEventListener('click', () => {
-    console.log('cat clicked');
     playSong(playBtn, piano.keyElements);
   });
 
