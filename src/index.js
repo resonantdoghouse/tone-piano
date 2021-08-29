@@ -77,10 +77,6 @@ const pianoSampler = new Tone.Sampler(
 let musicPartsCreated = false;
 
 function musicParts(pianoKeyElements) {
-  // console.log(pianoKeyElements.innerText);
-
-  // pianoKeyElements.forEach((element) => console.log(element.innerText));
-
   // melody music part
   const melodyPart = new Tone.Part(function (time, note) {
     pianoSampler.triggerAttackRelease(
@@ -90,14 +86,9 @@ function musicParts(pianoKeyElements) {
       note.velocity
     );
 
-    const keyElement = pianoKeyElements.find(
-      (element) => element.innerText === note.name
-    );
-    keyElement.classList.add('piano__key--active');
-    setTimeout(() => {
-      keyElement.classList.remove('piano__key--active');
-    }, note.duration * 1000);
+    keyPlaying(note, pianoKeyElements);
   }, songData.tracks[0].notes).start();
+
   // bass music part
   const bassPart = new Tone.Part(function (time, note) {
     pianoSampler.triggerAttackRelease(
@@ -107,15 +98,23 @@ function musicParts(pianoKeyElements) {
       note.velocity
     );
 
-    const keyElement = pianoKeyElements.find(
-      (element) => element.innerText === note.name
-    );
+    keyPlaying(note, pianoKeyElements);
+  }, songData.tracks[1].notes).start();
+  musicPartsCreated = true;
+}
+
+function keyPlaying(note, pianoKeyElements) {
+  const keyElement = pianoKeyElements.find((element) => {
+    const noteData = element.getAttribute('data-note');
+    return noteData === note.name;
+  });
+
+  if (keyElement) {
     keyElement.classList.add('piano__key--active');
     setTimeout(() => {
       keyElement.classList.remove('piano__key--active');
     }, note.duration * 1000);
-  }, songData.tracks[1].notes).start();
-  musicPartsCreated = true;
+  }
 }
 
 function playSong(playBtn, pianoKeyElements) {

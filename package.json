@@ -1,7 +1,7 @@
 {
-  "name": "avril-14-new",
+  "name": "tone-piano",
   "version": "1.0.0",
-  "description": "Webpack Tone.js Starter",
+  "description": "Webpack Tone.js Starter with css piano and Aphex Twin song Avril 14th",
   "private": true,
   "scripts": {
     "start": "webpack serve",
