@@ -2,9 +2,11 @@ import * as Tone from 'tone';
 import './style.css';
 
 import Piano from './Piano';
+import InputElement from './ui/InputElement';
 
-import avril14 from './avril14';
-import canonInD from './songs/canonInD.json';
+// song data
+import avril14 from './songs/avril14.json';
+import canon from './songs/canon.json';
 
 import pianoKeys from './pianoKeys';
 
@@ -13,11 +15,16 @@ const root = document.getElementById('root');
 /*
  * Config vars
  */
-const songs = [avril14, canonInD];
-const songData = songs[1];
+const songs = [
+  { title: 'Avril 14', artist: 'Aphex Twin', data: avril14 },
+  { title: 'Canon', artist: 'Johann Pachelbel', data: canon },
+];
+
+let songData = randomFromArray(songs).data;
 
 let playing = false;
 let bpm = (Tone.Transport.bpm.value = songData.header.bpm || '120');
+let piano, melodyPart, bassPart;
 
 /*
  * Effects
@@ -82,26 +89,24 @@ let musicPartsCreated = false;
 
 function musicParts(pianoKeyElements) {
   // melody music part
-  const melodyPart = new Tone.Part(function (time, note) {
+  melodyPart = new Tone.Part(function (time, note) {
     pianoSampler.triggerAttackRelease(
       note.name,
       note.duration,
       time,
       note.velocity
     );
-
     keyPlaying(note, pianoKeyElements, 'rh');
   }, songData.tracks[0].notes).start();
 
   // bass music part
-  const bassPart = new Tone.Part(function (time, note) {
+  bassPart = new Tone.Part(function (time, note) {
     pianoSampler.triggerAttackRelease(
       note.name,
       note.duration,
       time,
       note.velocity
     );
-
     keyPlaying(note, pianoKeyElements, 'lh');
   }, songData.tracks[1].notes).start();
   musicPartsCreated = true;
@@ -128,12 +133,12 @@ function playSong(playBtn, pianoKeyElements) {
   if (!playing) {
     Tone.Transport.start();
     playing = true;
-    playBtn.innerText = 'pause';
+    playBtn.innerText = 'stop';
     if (!musicPartsCreated) {
       musicParts(pianoKeyElements);
     }
   } else {
-    Tone.Transport.pause();
+    Tone.Transport.stop();
     playing = false;
     playBtn.innerText = 'play';
   }
@@ -143,12 +148,11 @@ function playSong(playBtn, pianoKeyElements) {
 }
 
 function handleKeyPress(key) {
-  console.log(key);
   pianoSampler.triggerAttackRelease([key], 0.5);
 }
 
 function init() {
-  const piano = new Piano(pianoKeys);
+  piano = new Piano(pianoKeys);
   piano.setup(handleKeyPress);
   piano.appendTo(root);
 
@@ -158,8 +162,32 @@ function init() {
   playBtn.addEventListener('click', () => {
     playSong(playBtn, piano.keyElements);
   });
-
   root.appendChild(playBtn);
+
+  const bpmInputElement = new InputElement('number', bpm, 'bpm');
+  bpmInputElement.setup(handleBPMInputChange);
+  bpmInputElement.appendTo(root);
+
+  const changeSongButton = new InputElement('button', 'random song');
+  changeSongButton.setup(handleChangeSong);
+  changeSongButton.appendTo(root);
+}
+
+function handleChangeSong(event) {
+  musicPartsCreated = false;
+  songData = randomFromArray(songs).data;
+  melodyPart.clear();
+  bassPart.clear();
+  musicParts(piano.keyElements);
+}
+
+function handleBPMInputChange(event) {
+  bpm = event.target.value;
+  Tone.getTransport().bpm.rampTo(bpm, 0.5);
+}
+
+function randomFromArray(array) {
+  return array[Math.floor(Math.random() * array.length)];
 }
 
 init();
