@@ -72,3 +72,9 @@ img {
   cursor: none;
   background: skyblue;
 }
+
+label,
+input {
+  padding: 10px;
+  font-size: 24px;
+}

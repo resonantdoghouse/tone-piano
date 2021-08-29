@@ -7,7 +7,7 @@ import InputElement from './ui/InputElement';
 // song data
 import avril14 from './songs/avril14.json';
 import canon from './songs/canon.json';
-
+import jynweythekYlow from './songs/jynweythekYlow.json';
 import pianoKeys from './pianoKeys';
 
 const root = document.getElementById('root');
@@ -18,6 +18,7 @@ const root = document.getElementById('root');
 const songs = [
   { title: 'Avril 14', artist: 'Aphex Twin', data: avril14 },
   { title: 'Canon', artist: 'Johann Pachelbel', data: canon },
+  { title: 'Jynweythek Ylow', artist: 'Aphex Twin', data: jynweythekYlow },
 ];
 
 let songData = randomFromArray(songs).data;
