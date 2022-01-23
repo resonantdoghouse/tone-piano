@@ -24,6 +24,7 @@
     "webpack-dev-server": "^4.0.0"
   },
   "dependencies": {
+    "p5": "^1.4.0",
     "tone": "^14.7.77"
   }
 }
